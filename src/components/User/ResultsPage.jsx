@@ -17,7 +17,7 @@ function ResultsPage({ location, answers }) {
         const fetchClinics = async () => {
           try {
             const response = await axiosInstance.get(
-              `${BASE_API_URL}/api/admin/clinics/nearby/?lat=${location.lat}&lng=${location.lng}`
+              `${BASE_API_URL}api/admin/clinics/nearby/?lat=${location.lat}&lng=${location.lng}`
             );
             console.log("Nearby clinics:", response.data);
             setClinics(response.data)
