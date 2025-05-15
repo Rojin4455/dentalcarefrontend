@@ -34,30 +34,30 @@ function ResultsPage({ location, answers }) {
 
   
     return (
-      <div className="pt-4">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Recommended Dental Clinics Near {location.location}</h2>
-        <p className="text-gray-600 mb-6">Based on your preferences, we found {clinics.length} clinics that match your needs</p>
-        
-        <div className="max-w-7xl mx-auto px-6 py-8">
-  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    {/* Left column: Clinic cards */}
-    <div className="lg:col-span-2 space-y-8">
-      {clinics.map((clinic) => (
-        <ClinicCard key={clinic.id} clinic={clinic} answers={answers} />
-      ))}
-    </div>
+      <div className="pt-4 px-4 sm:px-6">
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
+        Clinics Near {location.location}
+      </h2>
+      <p className="text-sm sm:text-base text-gray-600 mb-4">
+        Based on your preferences, we found {clinics.length} clinics
+      </p>
 
-    {/* Right column: Map */}
-    <div className="lg:col-span-1">
-      <div className="sticky top-4">
-        <Map clinics={clinics} location={location} />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left: Cards */}
+        <div className="lg:col-span-2 space-y-6">
+          {clinics.map((clinic) => (
+            <ClinicCard key={clinic.id} clinic={clinic} answers={answers} />
+          ))}
+        </div>
+
+        {/* Right: Map */}
+        <div className="lg:col-span-1">
+          <div className="sticky top-4">
+            <Map clinics={clinics} location={location} />
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
-
-      </div>
     );
   }
 

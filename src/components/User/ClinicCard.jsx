@@ -7,6 +7,8 @@ function ClinicCard({ clinic, answers }) {
   console.log("clinic detailssss: ", clinic)
   const navigate = useNavigate()
   const [isFavorite, setIsFavorite] = useState(false)
+  const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
+
 
   // Format the business hours for display
   const formatWeekSchedule = (businessHours) => {
@@ -87,111 +89,101 @@ function ClinicCard({ clinic, answers }) {
   const reviewCount = clinic.reviews ? clinic.reviews.length : 0
 
   return (
-    <div className="bg-white rounded-xl border overflow-hidden shadow-md">
-      <div className="p-4">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center">
-            {/* <div className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 font-bold mr-3">
-              {clinic.id || 1}
-            </div> */}
+        <div className="bg-white rounded-xl border overflow-hidden shadow-md">
+      <div className="p-4 space-y-4">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between">
+          <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
             <div>
-              <div className="text-orange-500 uppercase text-xs font-bold tracking-wider">SUPER PRACTICE</div>
-              <h3 className="text-2xl font-bold">{clinic.name}</h3>
-              <div className="flex items-center mt-1">
-                <MapPin size={14} className="text-gray-500 mr-1" />
-                <span className="text-gray-600 text-sm">{clinic.address || "Theater District"}</span>
-                <span className="mx-2 text-gray-400">•</span>
-                <span className="text-gray-600 text-sm">{distance}km</span>
+              <div className="text-orange-500 uppercase text-xs font-bold tracking-wider">
+                SUPER PRACTICE
               </div>
-              <div className="flex items-center mt-1">
+              <h3 className="text-xl sm:text-2xl font-bold">{clinic.name}</h3>
+              <div className="flex items-center mt-1 text-sm text-gray-600 flex-wrap">
+                <MapPin size={14} className="text-gray-500 mr-1" />
+                <span>{clinic.address || "Theater District"}</span>
+                <span className="mx-2 text-gray-400 hidden sm:inline">•</span>
+                <span>{distance}km</span>
+              </div>
+              <div className="flex items-center mt-1 text-sm text-gray-600 flex-wrap">
                 <Star size={14} className="text-yellow-500 mr-1" />
                 <span className="font-medium">{clinic.rating || "4.9"}</span>
-                {/* <span className="text-gray-500 ml-1">({reviewCount} reviews)</span> */}
-                <span className="mx-2 text-gray-400">•</span>
-                <span className="text-gray-600 text-sm">{clinic.description ? clinic.description.split('.')[0] : "Excellence in Patient Care"}</span>
+                <span className="mx-2 text-gray-400 hidden sm:inline">•</span>
+                <span>{clinic.description?.split('.')[0] || "Excellence in Patient Care"}</span>
               </div>
             </div>
           </div>
-          {/* <button className="p-2 rounded-full hover:bg-gray-100" onClick={() => setIsFavorite(!isFavorite)}>
-            <Heart size={24} className={`${isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
-          </button> */}
-        </div>
 
-        <div className="mt-4 flex items-center justify-between">
-          <button className="text-gray-500 hover:text-gray-700">
-            <span className="sr-only">Previous</span>← Previous
-          </button>
-
-          <div className="flex space-x-2 overflow-x-auto py-2">
-          {weekSchedule.map((day, index) => {
-  const isSelected = selectedDay === day.day;
-  const isAvailable = day.available;
-
-  return (
-    <button
-      key={index}
-      className={`flex-shrink-0 flex flex-col items-center p-3 rounded-lg border transition-all duration-200
-        ${isAvailable
-          ? isSelected
-            ? "bg-[#7eb0ed] text-white border-[#7eb0ed]"
-            : "bg-white hover:bg-gray-50 border-gray-200 cursor-pointer"
-          : "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-60"
-        }`}
-      onClick={() => isAvailable && setSelectedDay(day.day)}
-      disabled={!isAvailable}
-    >
-      <span className={`text-sm ${isSelected && isAvailable ? "text-white" : isAvailable ? "text-gray-500" : "text-gray-400"}`}>
-        {day.day}
-      </span>
-      <span className={`font-medium ${!isAvailable ? "text-gray-400" : ""}`}>
-        {day.month} {day.date}
-      </span>
-    </button>
-  );
-})}
-
+          <div className="flex space-x-2 mt-4 md:mt-0">
+            {clinic.images?.slice(0, 3).map((image, index) => (
+              <div key={image.id} className="w-12 h-12 rounded-full border overflow-hidden">
+                <img
+                  src={`${image.image_url}&key=${GOOGLE_API_KEY}` || "/placeholder.svg?height=50&width=50"}
+                  alt={`Staff ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
           </div>
-
-          <button className="text-gray-500 hover:text-gray-700">
-            <span className="sr-only">Next</span>
-            Next →
-          </button>
         </div>
 
-        <div className="mt-4">
-          <h4 className="font-medium mb-3">Request a time on {selectedDay}, May 13th</h4>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+        {/* Schedule Section */}
+        <div className="flex items-center justify-between overflow-x-auto space-x-2 pb-2">
+          {weekSchedule.map((day, index) => {
+            const isSelected = selectedDay === day.day;
+            const isAvailable = day.available;
+
+            return (
+              <button
+                key={index}
+                className={`flex-shrink-0 flex flex-col items-center p-2 sm:p-3 rounded-lg border text-sm
+                  ${isAvailable
+                    ? isSelected
+                      ? "bg-[#7eb0ed] text-white border-[#7eb0ed]"
+                      : "bg-white hover:bg-gray-50 border-gray-200"
+                    : "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-60"
+                  }`}
+                onClick={() => isAvailable && setSelectedDay(day.day)}
+                disabled={!isAvailable}
+              >
+                <span>{day.day}</span>
+                <span>{day.month} {day.date}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Time Slot Section */}
+        <div>
+          <h4 className="font-medium text-sm sm:text-base mb-2">
+            Request a time on {selectedDay || "Selected Day"}
+          </h4>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             {timeSlots.length > 0 ? (
               timeSlots.slice(0, 5).map((time, index) => (
                 <button
                   key={index}
-                  className="py-3 px-2 bg-[#e6f2ff] hover:bg-[#7eb0ed] text-[#7eb0ed] hover:text-white rounded-lg text-sm font-medium transition-colors"
+                  className="py-2 px-2 bg-[#e6f2ff] hover:bg-[#7eb0ed] text-[#7eb0ed] hover:text-white rounded-lg text-sm font-medium transition-colors"
                 >
                   {time}
                 </button>
               ))
             ) : (
-              <p className="col-span-full text-gray-500 text-sm">No appointments available for this day</p>
+              <p className="col-span-full text-gray-500 text-sm">No appointments available</p>
             )}
           </div>
         </div>
 
-        <div className="mt-6 flex items-center justify-between border-t pt-4">
-          <div className="flex items-center text-gray-600">
-          </div>
-
-          <div className="flex space-x-2">
-            
-            <button
-              onClick={() => navigate("/clinic-details", { state: { clinic } })}
-              className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-full font-medium"
-            >
-              View Profile
-            </button>
-          </div>
+        <div className="pt-4 border-t flex justify-end">
+          <button
+            onClick={() => navigate("/clinic-details", { state: { clinic } })}
+            className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-full font-medium text-sm"
+          >
+            View Profile
+          </button>
         </div>
       </div>
     </div>
+
   )
 }
 
