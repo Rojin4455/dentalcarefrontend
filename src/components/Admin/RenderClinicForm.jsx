@@ -525,13 +525,13 @@ const RenderClinicForm = ({ setSelectedClinic, selectedClinic, handleCancelEdit,
                                     className="w-full h-full object-cover"
                                 />
                                 <div className="absolute top-1 right-1 flex gap-1">
-                                    <button
+                                    {/* <button
                                         onClick={() => handleEditImage(idx)}
                                         className="bg-white bg-opacity-75 p-1 rounded hover:bg-blue-200"
                                         title="Edit"
                                     >
                                         <Pencil size={14} />
-                                    </button>
+                                    </button> */}
                                     <button
                                         onClick={() => handleDeleteImage(idx)}
                                         className="bg-white bg-opacity-75 p-1 rounded hover:bg-red-200"

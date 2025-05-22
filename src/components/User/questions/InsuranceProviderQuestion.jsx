@@ -3,8 +3,8 @@ import React from 'react'
 
 function InsuranceProviderQuestion({ answer, onSelect }) {
     const providers = [
-      'Aetna', 'Cigna', 'Delta Dental', 'Guardian', 
-      'Medicaid', 'MetLife', 'UnitedHealthcare', 'Other provider...'
+      'Manulife', 'Sun Life', 'Canada Life', 'Blue Cross', 
+      'Industrial Alliance', 'Desjardins', 'Green Shield','CDCP', 'Other provider...'
     ];
   
     return (

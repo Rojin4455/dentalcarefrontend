@@ -10,9 +10,6 @@ function ResultsPage({ location, answers }) {
     const BASE_API_URL = import.meta.env.VITE_BASE_API_URL
     const [clinics, setClinics] = useState([])
 
-    
-
-
     useEffect(() => {
         const fetchClinics = async () => {
           try {
@@ -25,7 +22,6 @@ function ResultsPage({ location, answers }) {
             console.error("Error fetching nearby clinics:", error);
           }
         };
-      
         if (location?.lat && location?.lng) {
           fetchClinics();
         }

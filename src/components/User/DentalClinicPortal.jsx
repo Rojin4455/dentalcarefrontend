@@ -17,6 +17,7 @@ import HomePage from '../../pages/user/HomePage';
 import { setLocation } from '../../slices/locationSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../api/axiosInstance';
 
 // Main App Component
 export default function ClinicPortal() {
@@ -59,6 +60,22 @@ export default function ClinicPortal() {
   // Handle form submissions
   const handleNext = () => {
     if (currentStep <=totalQuestions) {
+
+      if (answers.email){
+        try{
+          const response = axiosInstance.post("api/admin/add-email/",{
+            answers:answers
+          })
+          if (response.status === 200){
+            console.log("success response")
+          }else{
+            console.error("error response: ", response)
+          }
+
+        }catch(error){
+          console.error("error response: ", error)
+        }
+      }
       setCurrentStep(currentStep + 1);
     }
   };

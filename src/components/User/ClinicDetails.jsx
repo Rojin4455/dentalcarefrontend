@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { MapPin, Phone, Globe, Clock, Star, ChevronLeft, Calendar, ArrowUpRight } from "lucide-react"
+import { MapPin, Phone, Globe, Clock, Star, ChevronLeft, Calendar, ArrowUpRight,X } from "lucide-react"
 import { useLocation, useNavigate } from "react-router-dom"
 import ClinicMap from "./ClinicMap"
 
@@ -113,8 +113,53 @@ export default function ClinicDetails() {
     navigate("/clinic-results")
   }
 
+
+  const [showReminder, setShowReminder] = useState(true);
+
+
+  const handleCloseReminder = () => {
+    setShowReminder(false);
+  };
+
   return (
     <div className="max-w-full mx-auto bg-white">
+
+
+{showReminder && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+    <div className="bg-white rounded-xl p-6 w-[90%] max-w-md shadow-2xl text-center relative animate-fade-in">
+      <button
+        className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+        onClick={handleCloseReminder}
+      >
+        <X size={20} />
+      </button>
+
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/3050/3050525.png"
+        alt="Reward"
+        className="w-16 h-16 mx-auto mb-4"
+      />
+
+      <h2 className="text-xl font-semibold text-gray-800 mb-2">
+        Get a $50 Prepaid Mastercard!
+      </h2>
+
+      <p className="text-sm text-gray-600">
+        After your visit to this clinic, you'll receive a $50 reward. It's our way of saying thanks for taking care of your smile!
+      </p>
+
+      <button
+        onClick={handleCloseReminder}
+        className="mt-4 bg-[#7eb0ed] text-white px-4 py-2 rounded-full hover:bg-[#71a5e4] transition"
+      >
+        Got it!
+      </button>
+    </div>
+  </div>
+)}
+
+
       {/* Map Section */}
       <div className="relative h-64 bg-white rounded-lg overflow-hidden">
   <ClinicMap latitude={clinic.latitude} longitude={clinic.longitude} />

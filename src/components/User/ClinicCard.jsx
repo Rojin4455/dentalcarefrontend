@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { MapPin, Star, Heart } from "lucide-react"
+import { MapPin, Star, Heart, Phone } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 function ClinicCard({ clinic, answers }) {
@@ -92,26 +92,37 @@ function ClinicCard({ clinic, answers }) {
         <div className="bg-white rounded-xl border overflow-hidden shadow-md">
       <div className="p-4 space-y-4">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between">
-          <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
-            <div>
-              <div className="text-orange-500 uppercase text-xs font-bold tracking-wider">
-                SUPER PRACTICE
-              </div>
-              <h3 className="text-xl sm:text-2xl font-bold">{clinic.name}</h3>
-              <div className="flex items-center mt-1 text-sm text-gray-600 flex-wrap">
-                <MapPin size={14} className="text-gray-500 mr-1" />
-                <span>{clinic.address || "Theater District"}</span>
-                <span className="mx-2 text-gray-400 hidden sm:inline">•</span>
-                <span>{distance}km</span>
-              </div>
-              <div className="flex items-center mt-1 text-sm text-gray-600 flex-wrap">
-                <Star size={14} className="text-yellow-500 mr-1" />
-                <span className="font-medium">{clinic.rating || "4.9"}</span>
-                <span className="mx-2 text-gray-400 hidden sm:inline">•</span>
-                <span>{clinic.description?.split('.')[0] || "Excellence in Patient Care"}</span>
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-6 p-4 rounded-xl  bg-white">
+      <div className="flex-1">
+        <div className="text-orange-500 uppercase text-xs font-bold tracking-wider mb-1">
+          SUPER PRACTICE
+        </div>
+
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-800">{clinic.name}</h3>
+
+        <div className="flex items-center mt-2 text-sm text-gray-600 flex-wrap">
+          <MapPin size={14} className="text-gray-500 mr-1" />
+          <span>{clinic.address || "Theater District"}</span>
+          <span className="mx-2 text-gray-400 hidden sm:inline">•</span>
+          <span>{distance}km</span>
+        </div>
+
+        <div className="flex items-center mt-1 text-sm text-gray-600 flex-wrap">
+          <Star size={14} className="text-yellow-500 mr-1" />
+          <span className="font-medium">{clinic.rating+"/5"|| "4.9"}</span>
+          <span className="mx-2 text-gray-400 hidden sm:inline">•</span>
+          <span>{clinic.description?.split('.')[0] || "Excellence in Patient Care"}</span>
+        </div>
+
+        {clinic.phone_number && (
+          <div className="flex items-center mt-1 text-sm text-indigo-600 font-semibold flex-wrap">
+            <Phone size={14} className="mr-1 text-indigo-500" />
+            <a href={`tel:${clinic.phone_number}`} className="text-blue-600 underline">
+      Call Us: {clinic.phone_number}
+    </a>          </div>
+        )}
+      </div>
+    </div>
 
           <div className="flex space-x-2 mt-4 md:mt-0">
             {clinic.images?.slice(0, 3).map((image, index) => (

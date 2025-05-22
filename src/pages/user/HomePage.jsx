@@ -1,6 +1,8 @@
 import React,{useState, useRef} from 'react'
 import {Calendar, CheckCircle, MapPin, Search} from 'lucide-react'
 import { Autocomplete, useLoadScript } from '@react-google-maps/api';
+import './GoogleInput.css'
+import PopupOfferModal from '../../components/User/PopupOfferModal';
 
 function HomePage({ onLocationSelect }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -53,7 +55,20 @@ function HomePage({ onLocationSelect }) {
           });
         }
       }
+
     };
+
+    // if (inputRef.current) {
+    //   const input = inputRef.current;
+    //   setTimeout(() => {
+    //     const pacContainer = document.querySelector('.pac-container');
+    //     if (pacContainer) {
+    //       pacContainer.style.width = `${input.offsetWidth}px`;
+    //       pacContainer.style.borderRadius = '0 0 9999px 9999px'; // Optional: to match input's round corners
+    //       pacContainer.style.boxShadow = '0 10px 15px rgba(0, 0, 0, 0.1)'; // Optional: for nicer shadow
+    //     }
+    //   }, 100); // wait a moment to ensure DOM is ready
+    // }
 console.log("autocomplete", autocomplete)
   
     if (!isLoaded) return null;
@@ -64,6 +79,8 @@ console.log("autocomplete", autocomplete)
         <p className="text-xl text-gray-600 mb-12 max-w-2xl">
           Personalized recommendations based on your preferences and location
         </p>
+
+        <PopupOfferModal/>
         
         {/* Search bar */}
         <div className="w-full max-w-md mb-8 relative">
@@ -71,7 +88,7 @@ console.log("autocomplete", autocomplete)
     <div className="flex items-center pl-4 text-gray-400">
       <MapPin size={20} />
     </div>
-    <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged} sx={{ width: 200 }}>
+    <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
       <input
         type="text"
         ref={inputRef}

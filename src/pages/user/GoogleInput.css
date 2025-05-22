@@ -1,0 +1,31 @@
+.pac-container {
+  width: 80% !important;
+  max-width: 300px !important;
+  box-sizing: border-box;
+  margin: 0 auto;
+  /* border-radius: 0 0 9999px 9999px; */
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 640px) {
+  .pac-container {
+    width: 70% !important;
+    max-width: 500px !important;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .pac-container {
+    width: 40% !important;
+    max-width: 600px !important;
+  }
+}
+
+/* Extra large screens (large desktops) */
+@media (min-width: 1280px) {
+  .pac-container {
+    width: 30% !important;
+    max-width: 640px !important;
+  }
+}
