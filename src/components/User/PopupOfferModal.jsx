@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react"
 import { X } from "lucide-react"
+import axiosInstance from "../../api/axiosInstance";
 // import Link from "next/link"
 
 export default function PopupOfferModal() {
   const [showModal, setShowModal] = useState(false)
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -14,6 +19,35 @@ export default function PopupOfferModal() {
   }, [])
 
   const handleClose = () => setShowModal(false)
+
+
+  const handleApply = async () => {
+    if (!email) {
+      setMessage("Please enter an email address.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setMessage("");
+
+      const response = await axiosInstance.post("api/admin/add-email/", {
+        answers: {"email":email},
+      });
+
+      if (response.status === 200) {
+        setMessage("Offer applied successfully!");
+        setEmail(""); // Clear the field
+      } else {
+        setMessage("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("API error:", error);
+      setMessage("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!showModal) return null
 
@@ -46,16 +80,27 @@ export default function PopupOfferModal() {
                 Privacy Policy
               </a>
             </div>
+            <div>
+      <input
+        type="email"
+        placeholder="Enter your email to apply"
+        className="w-full p-3 mb-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#5098f0] text-sm"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-            <input
-              type="email"
-              placeholder="Enter your email to apply"
-              className="w-full p-3 mb-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#5098f0] text-sm"
-            />
+      <button
+        onClick={handleApply}
+        disabled={loading}
+        className="w-full bg-[#5098f0] text-white py-3 rounded-full hover:bg-[#4a6a90] transition font-medium text-sm disabled:opacity-50"
+      >
+        {loading ? "Applying..." : "Apply Offer"}
+      </button>
 
-            <button className="w-full bg-[#5098f0] text-white py-3 rounded-full hover:bg-[#4a6a90] transition font-medium text-sm">
-              Apply Offer
-            </button>
+      {message && (
+        <p className="text-sm mt-3 text-center text-gray-600">{message}</p>
+      )}
+    </div>
 
             <button onClick={handleClose} className="mt-3 text-xs text-gray-500 hover:text-gray-700">
               I do not want this offer
