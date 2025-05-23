@@ -71,7 +71,7 @@ export default function PopupOfferModal() {
             <p className="text-gray-600 text-sm mb-5">
               Get a $50 Mastercard Gift Card after visiting the dentist
               <br />
-              when you book with Opencare!
+              when you book with DentistNearMe.ai!
             </p>
 
             <div className="text-xs text-gray-500 mb-5">
