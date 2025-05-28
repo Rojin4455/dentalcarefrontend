@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react"
 import { X } from "lucide-react"
 import axiosInstance from "../../api/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../slices/userDetailsSlica";
+import { clearUser } from "../../slices/userDetailsSlica";
 // import Link from "next/link"
 
 export default function PopupOfferModal() {
   const [showModal, setShowModal] = useState(false)
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const {name, email} = useSelector((state) => state.userdetails)
+  const dispatch = useDispatch()
 
 
   useEffect(() => {
@@ -22,6 +28,11 @@ export default function PopupOfferModal() {
 
 
   const handleApply = async () => {
+
+    if (!name) {
+      setMessage("Please enter your name.");
+      return;
+    }
     if (!email) {
       setMessage("Please enter an email address.");
       return;
@@ -32,12 +43,18 @@ export default function PopupOfferModal() {
       setMessage("");
 
       const response = await axiosInstance.post("api/admin/add-email/", {
-        answers: {"email":email},
+        answers: {
+          "email":email,
+          "name":name
+        },
       });
 
       if (response.status === 200) {
+        dispatch(setUser({name:name, email:email}))
         setMessage("Offer applied successfully!");
-        setEmail(""); // Clear the field
+        setShowModal(false)
+        
+        
       } else {
         setMessage("Something went wrong. Please try again.");
       }
@@ -81,13 +98,21 @@ export default function PopupOfferModal() {
               </a>
             </div>
             <div>
+            <input
+        type="text"
+        placeholder="Enter your name"
+        className="w-full p-3 mb-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#5098f0] text-sm"
+        value={name}
+        onChange={(e) => dispatch(setUser({name:e.target.value}))}
+      />
       <input
         type="email"
-        placeholder="Enter your email to apply"
+        placeholder="Enter your email"
         className="w-full p-3 mb-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#5098f0] text-sm"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => dispatch(setUser({email:e.target.value}))}
       />
+
 
       <button
         onClick={handleApply}

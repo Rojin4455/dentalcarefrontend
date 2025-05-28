@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { 
   ChevronRight, 
   ChevronLeft, 
@@ -15,9 +15,10 @@ import ResultsPage from './ResultsPage';
 import AnxietyQuestion from './questions/AnxietyQuestion';
 import HomePage from '../../pages/user/HomePage';
 import { setLocation } from '../../slices/locationSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
+import { current } from '@reduxjs/toolkit';
 
 // Main App Component
 export default function ClinicPortal() {
@@ -28,6 +29,8 @@ export default function ClinicPortal() {
   const [progress, setProgress] = useState(0);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const {email,name} = useSelector((state) => state.userdetails)
+  const location = useSelector((state) => state.location)
   const [answers, setAnswers] = useState({
     emergency: '',
     factors: [],
@@ -37,8 +40,19 @@ export default function ClinicPortal() {
     hasInsurance: '',
     insuranceProvider: '',
     paymentOption: '',
-    email: ''
+    email: email,
+    name: name,
+    location:location.location
   });
+
+  useEffect(() => {
+    setAnswers((prev) => ({
+      ...prev,
+      email,
+      name,
+      location: location.location,
+    }));
+  }, [email, name, location.location]);
 
   // Total number of questions (dynamically calculated based on insurance answer)
   const totalQuestions = answers.hasInsurance === 'Yes' || answers.hasInsurance === 'No' ? 8 : 7;
@@ -58,12 +72,13 @@ export default function ClinicPortal() {
   console.log("selected LocationL ", selectedLocation)
 
   // Handle form submissions
-  const handleNext = () => {
-    if (currentStep <=totalQuestions) {
+  const handleNext = async () => {
+    console.log("current step: ", currentStep, totalQuestions)
+    if (currentStep === totalQuestions) {
 
       if (answers.email){
         try{
-          const response = axiosInstance.post("api/admin/add-email/",{
+          const response = await axiosInstance.post("api/admin/add-email/",{
             answers:answers
           })
           if (response.status === 200){
@@ -76,8 +91,8 @@ export default function ClinicPortal() {
           console.error("error response: ", error)
         }
       }
-      setCurrentStep(currentStep + 1);
     }
+    setCurrentStep(currentStep + 1);
   };
 
   const handleBack = () => {
@@ -164,7 +179,7 @@ export default function ClinicPortal() {
           return <PaymentOptionQuestion answer={answers.paymentOption} onSelect={(answer) => handleAnswer('paymentOption', answer)} />;
         }
       case 8:
-        return <ContactInfoQuestion email={answers.email} onEmailChange={(email) => handleAnswer('email', email)} />;
+        return <ContactInfoQuestion name={answers.name} email={answers.email} onEmailChange={(email) => handleAnswer('email', email)} onNameChange={(name) => handleAnswer('name', name)} />;
       case 9:
         dispatch(setLocation({location:selectedLocation, answers:answers}))
         navigate('/clinic-results')
