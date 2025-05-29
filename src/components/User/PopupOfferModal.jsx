@@ -42,22 +42,22 @@ export default function PopupOfferModal() {
       setLoading(true);
       setMessage("");
 
-      const response = await axiosInstance.post("api/admin/add-email/", {
-        answers: {
-          "email":email,
-          "name":name
-        },
-      });
+      // const response = await axiosInstance.post("api/admin/add-email/", {
+      //   answers: {
+      //     "email":email,
+      //     "name":name
+      //   },
+      // });
 
-      if (response.status === 200) {
+      // if (response.status === 200) {
         dispatch(setUser({name:name, email:email}))
         setMessage("Offer applied successfully!");
         setShowModal(false)
         
         
-      } else {
-        setMessage("Something went wrong. Please try again.");
-      }
+      // } else {
+      //   setMessage("Something went wrong. Please try again.");
+      // }
     } catch (error) {
       console.error("API error:", error);
       setMessage("An error occurred. Please try again.");
