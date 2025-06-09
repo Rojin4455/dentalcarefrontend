@@ -1,7 +1,7 @@
 import React from 'react'
-import {CheckCircle, Mail, User} from 'lucide-react'
+import {CheckCircle, Mail, User, Contact} from 'lucide-react'
 
-function ContactInfoQuestion({ name, email, onEmailChange, onNameChange }) {
+function ContactInfoQuestion({ name, email, number , onEmailChange, onNumberChange, onNameChange }) {
     return (
       <div className="max-w-3xl mx-auto mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-3">What is your contact info?</h2>
@@ -41,6 +41,24 @@ function ContactInfoQuestion({ name, email, onEmailChange, onNameChange }) {
           />
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Mail size={20} className="text-gray-400" />
+          </div>
+        </div>
+      </div>
+
+
+      <div>
+        <label htmlFor="number" className="block text-gray-700 font-medium mb-1">Mobile Number</label>
+        <div className="relative">
+          <input
+            id="number"
+            type="number"
+            value={number}
+            onChange={(e) => onNumberChange(e.target.value)}
+            placeholder="1234567890"
+            className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none shadow-sm"
+          />
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Contact size={20} className="text-gray-400" />
           </div>
         </div>
       </div>

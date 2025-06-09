@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   name: "",
-  email: ""
+  email: "",
+  number: ""
 };
 
 export const userDetailsSlice = createSlice({
@@ -20,6 +21,7 @@ export const userDetailsSlice = createSlice({
     clearUser: (state) => {
       state.name = "";
       state.email = "";
+      state.number = ""
     }
   }
 });

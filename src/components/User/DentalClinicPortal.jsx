@@ -29,7 +29,7 @@ export default function ClinicPortal() {
   const [progress, setProgress] = useState(0);
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {email,name} = useSelector((state) => state.userdetails)
+  const {email,name, number} = useSelector((state) => state.userdetails)
   const location = useSelector((state) => state.location)
   const [answers, setAnswers] = useState({
     emergency: '',
@@ -42,6 +42,7 @@ export default function ClinicPortal() {
     paymentOption: '',
     email: email,
     name: name,
+    number: number,
     location:location.location
   });
 
@@ -179,7 +180,7 @@ export default function ClinicPortal() {
           return <PaymentOptionQuestion answer={answers.paymentOption} onSelect={(answer) => handleAnswer('paymentOption', answer)} />;
         }
       case 8:
-        return <ContactInfoQuestion name={answers.name} email={answers.email} onEmailChange={(email) => handleAnswer('email', email)} onNameChange={(name) => handleAnswer('name', name)} />;
+        return <ContactInfoQuestion name={answers.name} email={answers.email} number={answers.number} onEmailChange={(email) => handleAnswer('email', email)} onNumberChange={(number) => handleAnswer('number', number)} onNameChange={(name) => handleAnswer('name', name)} />;
       case 9:
         dispatch(setLocation({location:selectedLocation, answers:answers}))
         navigate('/clinic-results')
