@@ -12,7 +12,7 @@ export default function PopupOfferModal() {
   // const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const {name, email} = useSelector((state) => state.userdetails)
+  const {name, email, number} = useSelector((state) => state.userdetails)
   const dispatch = useDispatch()
 
 
@@ -42,22 +42,23 @@ export default function PopupOfferModal() {
       setLoading(true);
       setMessage("");
 
-      // const response = await axiosInstance.post("api/admin/add-email/", {
-      //   answers: {
-      //     "email":email,
-      //     "name":name
-      //   },
-      // });
+      const response = await axiosInstance.post("api/admin/add-email/", {
+        answers: {
+          "email":email,
+          "name":name,
+          "number":number
+        },
+      });
 
-      // if (response.status === 200) {
-        dispatch(setUser({name:name, email:email}))
+      if (response.status === 200) {
+        dispatch(setUser({name:name, email:email, number:number}))
         setMessage("Offer applied successfully!");
         setShowModal(false)
         
         
-      // } else {
-      //   setMessage("Something went wrong. Please try again.");
-      // }
+      } else {
+        setMessage("Something went wrong. Please try again.");
+      }
     } catch (error) {
       console.error("API error:", error);
       setMessage("An error occurred. Please try again.");
@@ -111,6 +112,14 @@ export default function PopupOfferModal() {
         className="w-full p-3 mb-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#5098f0] text-sm"
         value={email}
         onChange={(e) => dispatch(setUser({email:e.target.value}))}
+      />
+
+      <input
+        type="number"
+        placeholder="Enter your phone number"
+        className="w-full p-3 mb-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#5098f0] text-sm"
+        value={number}
+        onChange={(e) => dispatch(setUser({number:e.target.value}))}
       />
 
 
