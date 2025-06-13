@@ -71,6 +71,42 @@ function ClinicCard({ clinic, answers }) {
     return slots
   }
 
+
+  const handlePhoneClick = (e) => {
+    e.preventDefault();
+    
+    // console.log('🔥 Phone button clicked!');
+    // console.log('📱 Phone number:', clinic.phone_number);
+    
+    // Check if gtag is available
+    if (typeof window.gtag === 'function') {
+      // console.log('✅ Google gtag is available');
+      
+      // Track the conversion
+      window.gtag('event', 'conversion', {
+        'send_to': 'AW-17108722657/SMrvCOS5xtUaEOHHid4_',
+        'value': 1.0,
+        'currency': 'CAD'
+      });
+      
+      // console.log('📊 Conversion event sent to Google Ads');
+      // console.log('📋 Conversion details:', {
+      //   send_to: 'AW-17108722657/SMrvCOS5xtUaEOHHid4_',
+      //   value: 1.0,
+      //   currency: 'CAD'
+      // });
+    } else {
+      // console.error('❌ Google gtag is NOT available');
+      console.log('🔍 Available window properties:', Object.keys(window).filter(key => key.includes('gtag') || key.includes('google')));
+    }
+    
+    // Small delay to ensure tracking fires before phone call
+    setTimeout(() => {
+      console.log('📞 Initiating phone call...');
+      window.location.href = `tel:${clinic.phone_number}`;
+    }, 100);
+  };
+
   // Get short day name from date
   const getShortDayName = (date) => {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -171,16 +207,17 @@ function ClinicCard({ clinic, answers }) {
 
         {/* Phone Number - Prominent Call-to-Action */}
         {clinic.phone_number && (
-          <div className="bg-gradient-to-r from-[#64a4f3]/10 to-[#4a90e2]/10 rounded-xl p-4 border border-[#64a4f3]/20">
-            <a 
-              href={`tel:${clinic.phone_number}`} 
-              className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#64a4f3] to-[#4a90e2] hover:from-[#5a94e3] hover:to-[#4080d2] text-white px-6 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 group"
-            >
-              <Phone size={20} className="group-hover:animate-pulse" />
-              <span>Call Now: {clinic.phone_number}</span>
-            </a>
-          </div>
-        )}
+        <div className="bg-gradient-to-r from-[#64a4f3]/10 to-[#4a90e2]/10 rounded-xl p-4 border border-[#64a4f3]/20">
+          <a 
+            href={`tel:${clinic.phone_number}`}
+            onClick={handlePhoneClick}
+            className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#64a4f3] to-[#4a90e2] hover:from-[#5a94e3] hover:to-[#4080d2] text-white px-6 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 group"
+          >
+            <Phone size={20} className="group-hover:animate-pulse" />
+            <span>Call Now: {clinic.phone_number}</span>
+          </a>
+        </div>
+      )}
 
         {/* Action Buttons */}
         <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center">
