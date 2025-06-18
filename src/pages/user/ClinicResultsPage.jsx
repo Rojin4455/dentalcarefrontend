@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import ResultsPage from '../../components/User/ResultsPage'
 import { useSelector } from 'react-redux'
 import Header from '../../components/User/Header'
@@ -8,6 +8,19 @@ function ClinicResultsPage() {
     const location = useSelector((state) => state.location)
     console.log("first", location)
     // console.log("location: ", location, answers)
+
+    useEffect(() => {
+      if (window.gtag) {
+        console.log('Sending Google Ads conversion event');
+        window.gtag('event', 'conversion', {
+          send_to: 'AW-17108722657/OrmZCLbQmd0aEOHHid4_',
+        });
+      } else {
+        console.warn('gtag not available on window');
+      }
+    }, []);
+
+
   return (
     <div className="min-h-screen bg-gray-50">
       <PromoHeader/>

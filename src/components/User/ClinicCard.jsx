@@ -207,16 +207,19 @@ function ClinicCard({ clinic, answers }) {
 
         {/* Phone Number - Prominent Call-to-Action */}
         {clinic.phone_number && (
-        <div className="bg-gradient-to-r from-[#64a4f3]/10 to-[#4a90e2]/10 rounded-xl p-4 border border-[#64a4f3]/20">
-          <a 
-            href={`tel:${clinic.phone_number}`}
-            onClick={handlePhoneClick}
-            className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#64a4f3] to-[#4a90e2] hover:from-[#5a94e3] hover:to-[#4080d2] text-white px-6 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 group"
-          >
-            <Phone size={20} className="group-hover:animate-pulse" />
-            <span>Call Now: {clinic.phone_number}</span>
-          </a>
-        </div>
+          <div className="bg-gradient-to-r from-[#64a4f3]/10 to-[#4a90e2]/10 rounded-xl p-4 border border-[#64a4f3]/20 w-full">
+  <a 
+    href={`tel:${clinic.phone_number}`}
+    onClick={handlePhoneClick}
+    className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#64a4f3] to-[#4a90e2] 
+               hover:from-[#5a94e3] hover:to-[#4080d2] text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold 
+               text-sm sm:text-base md:text-lg shadow-md hover:shadow-xl transform hover:scale-[1.02] 
+               transition-all duration-200 group w-full sm:w-auto text-center whitespace-nowrap"
+  >
+    <Phone size={20} className="group-hover:animate-pulse" />
+    <span>Call Now: {clinic.phone_number}</span>
+  </a>
+</div>
       )}
 
         {/* Action Buttons */}

@@ -56,10 +56,13 @@ export default function ClinicPortal() {
   }, [email, name, location.location]);
 
   // Total number of questions (dynamically calculated based on insurance answer)
-  const totalQuestions = answers.hasInsurance === 'Yes' || answers.hasInsurance === 'No' ? 8 : 7;
+  const totalQuestions = answers.hasInsurance === 'Yes' || answers.hasInsurance === 'No' ? 3 : 4;
 
   // Update progress whenever the current step changes
   React.useEffect(() => {
+    console.log("total questions : ", totalQuestions)
+
+    console.log("current step: ", currentStep)
     setProgress((currentStep / totalQuestions) * 100);
   }, [currentStep, totalQuestions]);
 
@@ -131,25 +134,25 @@ export default function ClinicPortal() {
   // Check if we can proceed to the next question
   const canProceed = () => {
     switch(currentStep) {
-      case 1: // Emergency question
-        return answers.emergency !== '';
-      case 2: // Important factors
-        return answers.factors.length > 0;
-      case 3: // Last visit
-        return answers.lastVisit !== '';
-      case 4: // Anxiety level
-        return answers.anxiety !== '';
-      case 5: // Time preference
-        return answers.timePreference.length > 0;
-      case 6: // Insurance question
+      // case 1: // Emergency question
+      //   return answers.emergency !== '';
+      // case 2: // Important factors
+      //   return answers.factors.length > 0;
+      // case 3: // Last visit
+      //   return answers.lastVisit !== '';
+      // case 4: // Anxiety level
+      //   return answers.anxiety !== '';
+      // case 5: // Time preference
+      //   return answers.timePreference.length > 0;
+      case 1: // Insurance question
         return answers.hasInsurance !== '';
-      case 7: // Insurance provider or payment option
+      case 2: // Insurance provider or payment option
         if (answers.hasInsurance === 'Yes') {
           return answers.insuranceProvider !== '';
         } else {
           return answers.paymentOption !== '';
         }
-      case 8: // Email
+      case 3: // Email
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email);
       default:
         return true;
@@ -161,27 +164,27 @@ export default function ClinicPortal() {
     switch (currentStep) {
       case 0:
         return <HomePage onLocationSelect={handleLocationSelect} />;
+      // case 1:
+      //   return <EmergencyQuestion answer={answers.emergency} onSelect={(answer) => handleAnswer('emergency', answer)} />;
+      // case 2:
+      //   return <FactorsQuestion selected={answers.factors} onSelect={(answer) => handleMultiAnswer('factors', answer)} />;
+      // case 3:
+      //   return <LastVisitQuestion answer={answers.lastVisit} onSelect={(answer) => handleAnswer('lastVisit', answer)} />;
+      // case 4:
+      //   return <AnxietyQuestion answer={answers.anxiety} onSelect={(answer) => handleAnswer('anxiety', answer)} />;
+      // case 5:
+      //   return <TimePreferenceQuestion selected={answers.timePreference} onSelect={(answer) => handleMultiAnswer('timePreference', answer)} />;
       case 1:
-        return <EmergencyQuestion answer={answers.emergency} onSelect={(answer) => handleAnswer('emergency', answer)} />;
-      case 2:
-        return <FactorsQuestion selected={answers.factors} onSelect={(answer) => handleMultiAnswer('factors', answer)} />;
-      case 3:
-        return <LastVisitQuestion answer={answers.lastVisit} onSelect={(answer) => handleAnswer('lastVisit', answer)} />;
-      case 4:
-        return <AnxietyQuestion answer={answers.anxiety} onSelect={(answer) => handleAnswer('anxiety', answer)} />;
-      case 5:
-        return <TimePreferenceQuestion selected={answers.timePreference} onSelect={(answer) => handleMultiAnswer('timePreference', answer)} />;
-      case 6:
         return <InsuranceQuestion answer={answers.hasInsurance} onSelect={(answer) => handleAnswer('hasInsurance', answer)} />;
-      case 7:
+      case 2:
         if (answers.hasInsurance === 'Yes') {
           return <InsuranceProviderQuestion answer={answers.insuranceProvider} onSelect={(answer) => handleAnswer('insuranceProvider', answer)} />;
         } else {
           return <PaymentOptionQuestion answer={answers.paymentOption} onSelect={(answer) => handleAnswer('paymentOption', answer)} />;
         }
-      case 8:
+      case 3:
         return <ContactInfoQuestion name={answers.name} email={answers.email} number={answers.number} onEmailChange={(email) => handleAnswer('email', email)} onNumberChange={(number) => handleAnswer('number', number)} onNameChange={(name) => handleAnswer('name', name)} />;
-      case 9:
+      case 4:
         dispatch(setLocation({location:selectedLocation, answers:answers}))
         navigate('/clinic-results')
         // return <ResultsPage location={selectedLocation} answers={answers} />;
@@ -191,7 +194,7 @@ export default function ClinicPortal() {
   };
 
   const renderProgressAndButtons = () => {
-    if (currentStep > 0 && currentStep < 9) {
+    if (currentStep > 0 && currentStep < 4) {
       return (
         <div className="w-full max-w-4xl mx-auto">
           {/* Material Design progress bar - taller and more defined */}
