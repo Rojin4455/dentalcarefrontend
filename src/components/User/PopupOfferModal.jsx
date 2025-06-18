@@ -4,6 +4,7 @@ import axiosInstance from "../../api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../slices/userDetailsSlica";
 import { clearUser } from "../../slices/userDetailsSlica";
+import { useLocation, useParams } from "react-router-dom";
 // import Link from "next/link"
 
 export default function PopupOfferModal() {
@@ -14,6 +15,10 @@ export default function PopupOfferModal() {
   const [message, setMessage] = useState("");
   const {name, email, number} = useSelector((state) => state.userdetails)
   const dispatch = useDispatch()
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const am_id = queryParams.get('am_id');
+
 
 
   useEffect(() => {
@@ -46,7 +51,8 @@ export default function PopupOfferModal() {
         answers: {
           "email":email,
           "name":name,
-          "number":number
+          "number":number,
+          "am_id":am_id
         },
       });
 

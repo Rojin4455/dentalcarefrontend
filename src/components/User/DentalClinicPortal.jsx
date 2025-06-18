@@ -16,7 +16,7 @@ import AnxietyQuestion from './questions/AnxietyQuestion';
 import HomePage from '../../pages/user/HomePage';
 import { setLocation } from '../../slices/locationSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 import { current } from '@reduxjs/toolkit';
 
@@ -31,6 +31,11 @@ export default function ClinicPortal() {
   const navigate = useNavigate()
   const {email,name, number} = useSelector((state) => state.userdetails)
   const location = useSelector((state) => state.location)
+  const urlLocation = useLocation();
+  const queryParams = new URLSearchParams(urlLocation.search);
+  const am_id = queryParams.get('am_id');
+
+
   const [answers, setAnswers] = useState({
     emergency: '',
     factors: [],
@@ -43,8 +48,26 @@ export default function ClinicPortal() {
     email: email,
     name: name,
     number: number,
-    location:location.location
+    location:location.location,
+    am_id:'',
   });
+
+
+
+
+
+  useEffect(() => {
+    if (am_id) {
+      setAnswers(prev => ({
+        ...prev,
+        am_id: am_id,
+      }));
+    }
+  }, [am_id]);
+
+  console.log("AM IDDD:< >", am_id, answers);
+
+
 
   useEffect(() => {
     setAnswers((prev) => ({
