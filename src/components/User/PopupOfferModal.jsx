@@ -59,6 +59,12 @@ export default function PopupOfferModal() {
       if (response.status === 200) {
         dispatch(setUser({name:name, email:email, number:number}))
         setMessage("Offer applied successfully!");
+
+        if (window.gtag) {
+          window.gtag('event', 'conversion', {
+            send_to: 'AW-17108722657/Y591CM2xmN0aEOHHid4_',
+          });
+        }
         setShowModal(false)
         
         
